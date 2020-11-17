@@ -5,6 +5,7 @@ class Solotest extends StatefulWidget {
   _SolotestState createState() => _SolotestState();
 }
 
+//komentar
 class _SolotestState extends State<Solotest> {
   @override
   Widget build(BuildContext context) {
