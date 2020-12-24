@@ -40,6 +40,7 @@ class _LoginState extends State<Login> {
                       labelText: 'Password', border: OutlineInputBorder()),
                 ),
                 OutlineButton(
+                  onPressed: () {},
                   textColor: Colors.white,
                   highlightedBorderColor: Colors.blue.withOpacity(0.15),
                 ),
