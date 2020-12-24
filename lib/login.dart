@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'soloTest.dart';
+import 'dashboard.dart';
+import 'main.dart';
+
+void main() => runApp(MyApp());
 
 class Login extends StatefulWidget {
   @override
@@ -7,16 +10,23 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  @override
-  void initState() {
-    super.initState();
-    startSolotest();
-  }
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  String email, password;
 
-  startSolotest() {
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
-      return Solotest();
-    }));
+  //tambah form input
+  final _formKey = GlobalKey<FormState>();
+
+  //tampilkan alert jika input salah
+  void _alertinputansalah() {
+    AlertDialog alertDialog = new AlertDialog(
+      content: new Container(
+          height: 100,
+          child: new Center(
+            child: new Text("Inputan anda salah"),
+          )),
+    );
+    showDialog(context: context, child: alertDialog);
   }
 
   @override
@@ -28,15 +38,10 @@ class _LoginState extends State<Login> {
             color: Colors.white,
             child: Column(children: <Widget>[
               Center(
-                  child: Text(
-                "Battle of Math",
-                style: TextStyle(
-                  color: Colors.blueAccent,
-                  height: 10,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-                textAlign: TextAlign.center,
+                  child: Image.asset(
+                "images/logo.png",
+                //width: 100,
+                alignment: Alignment.center,
               )),
               Padding(
                 padding: const EdgeInsets.only(
@@ -48,12 +53,13 @@ class _LoginState extends State<Login> {
                           margin: EdgeInsets.all(10),
                           child: TextFormField(
                             validator: (String value) {
-                              if (value.isEmpty) {
+                              if (!value.contains('@')) {
+                                //jika email mengandung karakter @ maka tampilkan
                                 return 'return some text';
                               }
                               return null;
                             },
-                            initialValue: 'email',
+                            //initialValue: 'email',
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                                 labelText: 'Email',
@@ -64,7 +70,16 @@ class _LoginState extends State<Login> {
                       Container(
                           margin: EdgeInsets.all(10),
                           child: TextFormField(
-                              initialValue: 'password',
+                              validator: (String value) {
+                                if (value.isEmpty) {
+                                  return 'enter your password';
+                                }
+                                return null;
+                              },
+                              maxLength: 8,
+                              maxLengthEnforced: true,
+                              controller: passwordController,
+                              //initialValue: 'password',
                               obscureText: true,
                               decoration: InputDecoration(
                                   labelText: 'Password',
@@ -73,10 +88,18 @@ class _LoginState extends State<Login> {
                                   border: OutlineInputBorder()))),
                       RaisedButton(
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Solotest()));
+                          if (_formKey.currentState.validate()) {
+                            if (email == "admin@gmail.com") {
+                            } else if (password == "admin") {
+                              return Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Dashboard()));
+                            } else {
+                              //menampilkan alert jika input salah
+                              _alertinputansalah();
+                            }
+                          }
                         },
                         child: Text(
                           'LOGIN',
@@ -84,9 +107,40 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text(
+                          'Lupa password',
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text('atau masuk dengan'),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(right: 10),
+                            child: FloatingActionButton(
+                              onPressed: () {},
+                              child: Image.asset('images/google.png'),
+                              backgroundColor: Colors.blueAccent,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(right: 10),
+                            child: FloatingActionButton(
+                              onPressed: () {},
+                              child: Image.asset('images/facebook.png'),
+                              backgroundColor: Colors.blueAccent,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
                         padding: const EdgeInsets.only(top: 150, bottom: 0),
                         child: Text(
-                          'Not have account? Register',
+                          'Belum punya akun? Daftar sekarang',
                           textAlign: TextAlign.center,
                         ),
                       ),
