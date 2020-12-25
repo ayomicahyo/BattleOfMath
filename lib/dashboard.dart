@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
+import 'soloTest.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -90,7 +91,9 @@ class _DashboardState extends State<Dashboard> {
                 color: Theme.of(context).primaryColor,
               ),
               onTap: () {
-                Navigator.pushNamed(context, "/selftest");
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => GetJson()));
+                //Navigator.pushNamed(context, "/selftest");  Sorry Diganti Dulu
               },
             ),
           ),
