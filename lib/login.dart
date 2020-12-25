@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dashboard.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -6,46 +7,156 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  //handel perubahan text
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  String email, password;
+
+  //tampilkan alert jika input salah
+  void _alertinputansalah() {
+    AlertDialog alertDialog = new AlertDialog(
+      content: new Container(
+          height: 100,
+          child: new Center(
+            child: new Text("Inputan anda salah"),
+          )),
+    );
+    showDialog(context: context, child: alertDialog);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
             width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.only(top: 50),
             color: Colors.white,
-            child: Column(
-              children: <Widget>[
-                Container(
-                    width: 150,
-                    height: 150,
-                    decoration: BoxDecoration(
-                        color: Colors.blueAccent, shape: BoxShape.rectangle),
-                    child: Center()),
-                Text(
-                  "Battle of Math",
-                  style: TextStyle(
-                    fontSize: 50,
+            child: Column(children: <Widget>[
+              Center(
+                  child: Image.asset(
+                "assets/images/ColorLogo.png",
+                height: 200,
+                width: 200,
+                alignment: Alignment.center,
+              )),
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 0, bottom: 20, left: 20, right: 20),
+                child: Form(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                          margin: EdgeInsets.all(10),
+                          child: TextFormField(
+                            //menyambungkan
+                            controller: emailController,
+                            validator: (String value) {
+                              if (!email.contains('@')) {
+                                //jika email mengandung karakter @ maka tampilkan
+                                return 'email tidak valid';
+                              }
+                              return null;
+                            },
+                            //initialValue: 'email',
+                            decoration: InputDecoration(
+                                labelText: 'Email',
+                                hintText: 'email@example.com',
+                                prefixIcon: Icon(Icons.message),
+                                border: OutlineInputBorder()),
+                          )),
+                      Container(
+                          margin: EdgeInsets.all(10),
+                          child: TextFormField(
+                              validator: (String value) {
+                                if (value.isEmpty) {
+                                  return 'enter your password';
+                                }
+                                return null;
+                              },
+                              maxLength: 5,
+                              //maxLengthEnforced: true,
+                              controller: passwordController,
+                              //initialValue: 'password',
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                  labelText: 'Password',
+                                  hintText: "enter password",
+                                  prefixIcon: Icon(Icons.lock),
+                                  border: OutlineInputBorder()))),
+                      RaisedButton(
+                        onPressed: () {
+                          email = emailController.text;
+                          password = passwordController.text;
+
+                          if (email == "admin@email.com" &&
+                              password == "admin") {
+                            return Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Dashboard()));
+                          } else if (password != "admin") {
+                            //menampilkan alert jika input salah
+                            _alertinputansalah();
+                          }
+                        },
+                        child: Text(
+                          'LOGIN',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text(
+                          'Lupa password?',
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text('atau masuk dengan'),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(top: 20, right: 20),
+                            child: FloatingActionButton(
+                              child: Image.asset(
+                                'assets/images/google.png',
+                                width: 50,
+                                height: 50,
+                              ),
+                              onPressed: () {},
+                              backgroundColor: Colors.white,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 20, left: 20),
+                            child: FloatingActionButton(
+                              child: Image.asset(
+                                'assets/images/facebook.png',
+                                width: 50,
+                                height: 50,
+                              ),
+                              onPressed: () {},
+                              backgroundColor: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 50, bottom: 0),
+                        child: Text(
+                          'Belum punya akun? Daftar sekarang',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                TextFormField(
-                  initialValue: 'Username',
-                  decoration: InputDecoration(
-                      labelText: 'Username',
-                      errorText: 'Error',
-                      border: OutlineInputBorder()),
-                ),
-                TextFormField(
-                  initialValue: 'Password',
-                  decoration: InputDecoration(
-                      labelText: 'Password', border: OutlineInputBorder()),
-                ),
-                OutlineButton(
-                  onPressed: () {},
-                  textColor: Colors.white,
-                  highlightedBorderColor: Colors.blue.withOpacity(0.15),
-                ),
-                Text('Belum punya akun? DAFTAR'),
-              ],
-            )));
+              )
+            ])));
   }
 }
