@@ -1,19 +1,53 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'dart:convert';
+
+class GetJson extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: DefaultAssetBundle.of(context)
+            .loadString("assets/sampleQuestion.json"),
+        builder: (context, snapshot) {
+          List myData = json.decode(snapshot.data.toString());
+          if (myData == null) {
+            return Scaffold(
+              body: Center(
+                child: Text("Loading.."),
+              ),
+            );
+          } else {
+            return Solotest(myData: myData);
+          }
+        });
+  }
+}
 
 class Solotest extends StatefulWidget {
+  var myData;
+
+  Solotest({Key key, @required this.myData}) : super(key: key);
   @override
-  _SolotestState createState() => _SolotestState();
+  _SolotestState createState() => _SolotestState(myData);
 }
 
 class _SolotestState extends State<Solotest> {
+  var myData;
+  _SolotestState(this.myData);
+
   int timer = 60;
   int nomorSoal = 1;
   String updateTime = "60";
   bool timerOn = true;
+  List<String> buttonAnswerStatus = ["normal", "normal", "normal", "normal"];
+  List<bool> buttonStatus = [true, true, true, true];
+  int jumlahBenar = 0;
+  int jumlahSalah = 0;
+  String jawaban;
 
   @override
   void initState() {
+    jawaban = myData[2][nomorSoal.toString()];
     startTimer();
     super.initState();
   }
@@ -21,7 +55,10 @@ class _SolotestState extends State<Solotest> {
   showDoneAlertDialog(BuildContext context) {
     AlertDialog doneActionAlert = AlertDialog(
       title: Text("selesai"),
-      content: Text("Lihat Hasil"),
+      content: Text("Lihat Hasil " +
+          jumlahBenar.toString() +
+          " " +
+          jumlahSalah.toString()),
       actions: [
         FlatButton(
           onPressed: () {},
@@ -48,8 +85,13 @@ class _SolotestState extends State<Solotest> {
             setState(
               () {
                 nomorSoal += 1;
+                jawaban = myData[2][nomorSoal.toString()];
                 timer = 60; // ini tergantung waktu soal di JSON ya
                 timerOn = true;
+                for (int i = 0; i < 4; i++) {
+                  buttonAnswerStatus[i] = "normal";
+                  buttonStatus[i] = true;
+                }
                 Navigator.pop(context, false);
               },
             );
@@ -90,7 +132,7 @@ class _SolotestState extends State<Solotest> {
     }
   }
 
-  Widget choiceButton() {
+  Widget choiceButton(String optionText, int numButton) {
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: 10.0,
@@ -98,6 +140,27 @@ class _SolotestState extends State<Solotest> {
       ),
       child: MaterialButton(
         onPressed: () {
+          setState(() {
+            if (optionText == jawaban) {
+              jumlahBenar += 1;
+            } else {
+              jumlahSalah += 1;
+            }
+
+            if (jawaban == "a") {
+              buttonStatus[0] = false;
+            }
+            if (jawaban == "b") {
+              buttonStatus[1] = false;
+            }
+            if (jawaban == "c") {
+              buttonStatus[2] = false;
+            }
+            if (jawaban == "d") {
+              buttonStatus[3] = false;
+            }
+          });
+
           if (nomorSoal == 10) {
             showDoneAlertDialog(context);
           } else {
@@ -105,11 +168,11 @@ class _SolotestState extends State<Solotest> {
           }
         },
         child: Text(
-          "Option 1",
+          myData[1][nomorSoal.toString()][optionText],
           style: TextStyle(fontFamily: "Quando", fontSize: 16),
         ),
         splashColor: Colors.lightBlueAccent,
-        color: Colors.lightBlue,
+        color: buttonStatus[numButton] ? Colors.lightBlue : Colors.green,
         minWidth: 200.0,
         height: 45.0,
         shape:
@@ -166,8 +229,8 @@ class _SolotestState extends State<Solotest> {
                 padding: EdgeInsets.all(15.0),
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Sample Soal...",
-                  style: TextStyle(fontSize: 18, fontFamily: "Quando"),
+                  myData[0][nomorSoal.toString()],
+                  style: TextStyle(fontSize: 15, fontFamily: "Quando"),
                 ),
               ),
             ),
@@ -177,10 +240,10 @@ class _SolotestState extends State<Solotest> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    choiceButton(),
-                    choiceButton(),
-                    choiceButton(),
-                    choiceButton(),
+                    choiceButton("a", 0),
+                    choiceButton("b", 1),
+                    choiceButton("c", 2),
+                    choiceButton("d", 3),
                   ],
                 ),
               ),

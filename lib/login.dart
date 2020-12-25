@@ -90,7 +90,7 @@ class _LoginState extends State<Login> {
 
                           if (email == "admin@email.com" &&
                               password == "admin") {
-                            return Navigator.push(
+                            return Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Dashboard()));
@@ -123,6 +123,7 @@ class _LoginState extends State<Login> {
                           Container(
                             margin: EdgeInsets.only(top: 20, right: 20),
                             child: FloatingActionButton(
+                              heroTag: "btnGoogle",
                               child: Image.asset(
                                 'assets/images/google.png',
                                 width: 50,
@@ -135,6 +136,7 @@ class _LoginState extends State<Login> {
                           Container(
                             margin: EdgeInsets.only(top: 20, left: 20),
                             child: FloatingActionButton(
+                              heroTag: "buttonFacebook",
                               child: Image.asset(
                                 'assets/images/facebook.png',
                                 width: 50,
