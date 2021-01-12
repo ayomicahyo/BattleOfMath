@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
 import 'dart:async';
+import 'LeaderBoard.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => Login(),
+          builder: (context) => LeaderBoard(), //GANTI GANTI DISINI YA
         ),
       );
     });
