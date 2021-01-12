@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'soloTest.dart';
+import 'RankPages.dart';
+import 'LeaderBoard.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -9,7 +11,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  int currentIndex = 0;
+  int currentIndex = 1;
   Image applogo = new Image(
       image: new ExactAssetImage("assets/images/whiteLogo.png"),
       height: 50.9,
@@ -92,7 +94,7 @@ class _DashboardState extends State<Dashboard> {
               ),
               onTap: () {
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => GetJson()));
+                    MaterialPageRoute(builder: (context) => GetJson(true)));
                 //Navigator.pushNamed(context, "/selftest");  Sorry Diganti Dulu
               },
             ),
@@ -134,7 +136,8 @@ class _DashboardState extends State<Dashboard> {
                 color: Theme.of(context).primaryColor,
               ),
               onTap: () {
-                Navigator.pushNamed(context, "/selftest");
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => GetJson(false)));
               },
             ),
           ),
@@ -223,8 +226,15 @@ class _DashboardState extends State<Dashboard> {
                     text: 'Home',
                   ),
                   GButton(
-                    icon: LineIcons.heart_o,
+                    icon: LineIcons.bar_chart,
                     text: 'Leaderbard',
+                    // INI CHANGE SCENE NYA CEMANA ?!!!!
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LeaderBoard()));
+                    },
                   ),
                   GButton(
                     icon: LineIcons.search,

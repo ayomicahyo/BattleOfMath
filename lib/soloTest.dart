@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
+import 'RankPages.dart';
 
 class GetJson extends StatelessWidget {
+  bool soloTest = false;
+
+  GetJson(bool _soloTest) {
+    this.soloTest = _soloTest;
+  }
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -17,7 +23,9 @@ class GetJson extends StatelessWidget {
               ),
             );
           } else {
-            return Solotest(myData: myData);
+            return (soloTest == true)
+                ? Solotest(myData: myData)
+                : RankPages(myData: myData);
           }
         });
   }
