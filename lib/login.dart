@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dashboard.dart';
+//import 'dashboard.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -88,12 +88,15 @@ class _LoginState extends State<Login> {
                           email = emailController.text;
                           password = passwordController.text;
 
-                          if (email == "admin@email.com" &&
+                          if (email == "admin@gmail.com" &&
                               password == "admin") {
-                            return Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Dashboard()));
+                            //PERUBAHAN SEMENTARA
+                            return Navigator.pushReplacementNamed(
+                                context, '/dashboard');
+                            // return Navigator.pushReplacement(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => Dashboard()));
                           } else if (password != "admin") {
                             //menampilkan alert jika input salah
                             _alertinputansalah();

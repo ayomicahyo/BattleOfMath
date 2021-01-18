@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "475419268097",
+    "project_id": "battleofmath-6cc35",
+    "storage_bucket": "battleofmath-6cc35.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:475419268097:android:178fb352e97ce5731adc00",
+        "android_client_info": {
+          "package_name": "com.example.battleofmath"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "475419268097-1g152b5441kbh4b4t3d3qbndmmlgb77l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTUQSA4TENWAF6Ux-m3HRnlxKlnCktoXQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "475419268097-1g152b5441kbh4b4t3d3qbndmmlgb77l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
