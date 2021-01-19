@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 //import 'Splash.dart';
 //import 'login.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
