@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'dashboard.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -122,27 +120,25 @@ class _LoginState extends State<Login> {
                               'password': 'admin'
                             });*/
 
-
-                            email = emailController.text;
-                            password = passwordController.text;
-
-                            if (email == "admin@email.com" &&
-                                password == "admin") {
-                              return Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Dashboard()));
-                            } else if (password != "admin") {
-                              //menampilkan alert jika input salah
-                              _alertinputansalah();
-                            }
-                          },
-                          child: Text(
-                            'LOGIN',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
+                          if (email == "admin@gmail.com" &&
+                              password == "admin") {
+                            //PERUBAHAN SEMENTARA
+                            return Navigator.pushReplacementNamed(
+                                context, '/dashboard');
+                            // return Navigator.pushReplacement(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => Dashboard()));
+                          } else if (password != "admin") {
+                            //menampilkan alert jika input salah
+                            _alertinputansalah();
+                          }
+                        },
+                        child: Text(
+                          'LOGIN',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
                         ),
                         Padding(

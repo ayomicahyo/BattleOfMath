@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'login.dart';
+//import 'login.dart';
 import 'dart:async';
-import 'LeaderBoard.dart';
+//import 'LeaderBoard.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -17,12 +17,14 @@ class _SplashScreenState extends State<SplashScreen> {
   splashScreenAction() async {
     var duration = const Duration(seconds: 5);
     return Timer(duration, () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LeaderBoard(), //GANTI GANTI DISINI YA
-        ),
-      );
+      //PERUBAHAN SEMENTARA
+      Navigator.pushNamed(context, '/login');
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => LeaderBoard(), //GANTI GANTI DISINI YA
+      //   ),
+      //);
     });
   }
 
