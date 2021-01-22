@@ -6,6 +6,14 @@ class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
+//class DignInResult
+/*class SignInResult{
+  final FirebaseUser user;
+  final String message;
+    //tampilkan
+    SignInResult({this.user, this.message});
+}*/
+
 class _LoginState extends State<Login> {
   //handel perubahan text
   final emailController = TextEditingController();
@@ -23,7 +31,7 @@ class _LoginState extends State<Login> {
     );
     showDialog(context: context, child: alertDialog);
   }
-
+/*
   //class buat daftar email/pass
   static FirebaseAuth _auth = FirebaseAuth.instance;
   //method login
@@ -36,15 +44,7 @@ class _LoginState extends State<Login> {
     } catch (e) {
       return SignInResult(message: e.toString());
     }
-  }
-
-  //class DignInResult
-    class SignInResult{
-      final FirebaseUser user;
-      final String message;
-      //tampilkan
-      SignInResult({this.user, this.message});
-    }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -107,12 +107,12 @@ class _LoginState extends State<Login> {
                                     prefixIcon: Icon(Icons.lock),
                                     border: OutlineInputBorder()))),
                         RaisedButton(
-                          onPressed: () async {
-                            SignInResult result = await AuthServices.createUser(
-                              email = emailController.text,
-                              password = passwordController.text);
-                      
-                            /*FirebaseFirestore.instance
+                            onPressed: () async {
+                              //SignInResult result = await AuthServices.createUser(
+                              email = emailController.text;
+                              password = passwordController.text;
+
+                              /*FirebaseFirestore.instance
                                 .collection('account')
                                 .add({
                               'id': '16',
@@ -120,27 +120,27 @@ class _LoginState extends State<Login> {
                               'password': 'admin'
                             });*/
 
-                          if (email == "admin@gmail.com" &&
-                              password == "admin") {
-                            //PERUBAHAN SEMENTARA
-                            return Navigator.pushReplacementNamed(
-                                context, '/dashboard');
-                            // return Navigator.pushReplacement(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => Dashboard()));
-                          } else if (password != "admin") {
-                            //menampilkan alert jika input salah
-                            _alertinputansalah();
-                          }
-                        },
-                        child: Text(
-                          'LOGIN',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
+                              if (email == "admin@gmail.com" &&
+                                  password == "admin") {
+                                //PERUBAHAN SEMENTARA
+                                return Navigator.pushReplacementNamed(
+                                    context, '/dashboard');
+                                // return Navigator.pushReplacement(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) => Dashboard()));
+                              } else {
+                                //menampilkan alert jika input salah
+                                _alertinputansalah();
+                              }
+                            },
+                            child: Text(
+                              'LOGIN',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            )),
                         Padding(
                           padding: const EdgeInsets.all(10),
                           child: Text(

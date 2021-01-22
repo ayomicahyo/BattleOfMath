@@ -2,11 +2,10 @@ import 'package:battleofmath/Splash.dart';
 import 'package:battleofmath/dashboard.dart';
 import 'package:battleofmath/login.dart';
 import 'package:battleofmath/soloTest.dart';
+import 'package:battleofmath/MatchMaking.dart';
 import 'package:flutter/material.dart';
-//import 'dashboard.dart';
-//import 'soloTest.dart';
-//import 'Splash.dart';
-//import 'login.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +29,7 @@ class _MyAppState extends State<MyApp> {
         '/login': (context) => Login(),
         '/dashboard': (context) => Dashboard(),
         '/GetJson': (context) => GetJson(true),
+        '/MatchMaking': (context) => MatchMaking(),
       },
       //home: GetJson(), // GANTI AJA PAKE CLASS YANG MAU DI PANGGIL GUYS
       //home: SplashScreen(), // GANTI AJA PAKE CLASS YANG MAU DI PANGGIL GUYS

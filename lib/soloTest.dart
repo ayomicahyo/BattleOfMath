@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -5,6 +6,8 @@ import 'RankPages.dart';
 
 class GetJson extends StatelessWidget {
   bool soloTest = false;
+  String player1Name = "Player1";
+  String player2name = "Player2";
 
   GetJson(bool _soloTest) {
     this.soloTest = _soloTest;
@@ -33,15 +36,19 @@ class GetJson extends StatelessWidget {
 
 class Solotest extends StatefulWidget {
   var myData;
-
+  String player1Name;
+  String player2Name;
   Solotest({Key key, @required this.myData}) : super(key: key);
   @override
-  _SolotestState createState() => _SolotestState(myData);
+  _SolotestState createState() =>
+      _SolotestState(myData, player1Name, player2Name);
 }
 
 class _SolotestState extends State<Solotest> {
   var myData;
-  _SolotestState(this.myData);
+  String player1Name;
+  String player2Name;
+  _SolotestState(this.myData, this.player1Name, this.player2Name);
 
   int timer = 60;
   int nomorSoal = 1;
@@ -69,7 +76,9 @@ class _SolotestState extends State<Solotest> {
           jumlahSalah.toString()),
       actions: [
         FlatButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, "/dashboard");
+          },
           child: Text("Calculation"),
         ),
       ],
@@ -192,14 +201,36 @@ class _SolotestState extends State<Solotest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.lightBlue,
-          title: Text(
-            "Soal : " + nomorSoal.toString() + "/10",
-            style: TextStyle(color: Colors.black),
-          ),
+      appBar: AppBar(
+        backgroundColor: Colors.lightBlue,
+        title: Text(
+          "Soal : " + nomorSoal.toString() + "/10",
+          style: TextStyle(color: Colors.black),
         ),
-        body: Column(
+      ),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('room').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return ListView(
+            children: snapshot.data.docs.map((document) {
+              return Container(
+                child: Center(child: Text(document['id'])),
+              );
+            }).toList(),
+          );
+        },
+      ),
+    );
+  }
+}
+
+/*Column(
           children: <Widget>[
             Expanded(
               flex: 1,
@@ -257,6 +288,4 @@ class _SolotestState extends State<Solotest> {
               ),
             ),
           ],
-        ));
-  }
-}
+        ));*/

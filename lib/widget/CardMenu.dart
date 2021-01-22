@@ -138,10 +138,7 @@ class _CardMenuState extends State<CardMenu> {
                     color: Theme.of(context).primaryColor,
                   ),
                   onTap: () {
-                    // Navigator.pushReplacement(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => GetJson(false)));
+                    //Navigator.pushNamed(context, "/MatchMaking");
                   },
                 ),
               ),
@@ -207,7 +204,7 @@ class _CardMenuState extends State<CardMenu> {
                     color: Theme.of(context).primaryColor,
                   ),
                   onTap: () {
-                    Navigator.pushNamed(context, "/selftest");
+                    Navigator.pushNamed(context, "/MatchMaking");
                   },
                 ),
               ),
