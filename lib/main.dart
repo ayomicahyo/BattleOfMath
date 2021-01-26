@@ -28,7 +28,8 @@ class _MyAppState extends State<MyApp> {
         '/': (context) => SplashScreen(),
         '/login': (context) => Login(),
         '/dashboard': (context) => Dashboard(),
-        '/GetJson': (context) => GetJson(true),
+        '/GetJsonTrue': (context) => GetJson(true, "Player1", "Player2"),
+        '/GetJsonFalse': (context) => GetJson(false, "Player1", "anjay"),
         '/MatchMaking': (context) => MatchMaking(),
       },
       //home: GetJson(), // GANTI AJA PAKE CLASS YANG MAU DI PANGGIL GUYS

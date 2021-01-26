@@ -9,8 +9,10 @@ class GetJson extends StatelessWidget {
   String player1Name = "Player1";
   String player2name = "Player2";
 
-  GetJson(bool _soloTest) {
+  GetJson(bool _soloTest, _player1name, _player2name) {
     this.soloTest = _soloTest;
+    this.player1Name = _player1name;
+    this.player2name = _player2name;
   }
   @override
   Widget build(BuildContext context) {
@@ -27,8 +29,8 @@ class GetJson extends StatelessWidget {
             );
           } else {
             return (soloTest == true)
-                ? Solotest(myData: myData)
-                : RankPages(myData: myData);
+                ? Solotest(myData, player1Name, player2name)
+                : RankPages(myData, player1Name, player2name);
           }
         });
   }
@@ -38,7 +40,11 @@ class Solotest extends StatefulWidget {
   var myData;
   String player1Name;
   String player2Name;
-  Solotest({Key key, @required this.myData}) : super(key: key);
+  Solotest(List myData, String name1, String name2) {
+    this.myData = myData;
+    this.player1Name = name1;
+    this.player2Name = name2;
+  }
   @override
   _SolotestState createState() =>
       _SolotestState(myData, player1Name, player2Name);
@@ -215,15 +221,67 @@ class _SolotestState extends State<Solotest> {
             return Center(
               child: CircularProgressIndicator(),
             );
+          } else {
+            return Column(
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    padding: EdgeInsets.only(top: 10),
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: <Widget>[
+                        Text(player1Name + " : 0"),
+                        Text(player2Name + " : 0"),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    child: Text(
+                      updateTime, // Timer,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          height: 1,
+                          fontSize: 30),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                    ),
+                    padding: EdgeInsets.all(15.0),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      myData[0][nomorSoal.toString()],
+                      style: TextStyle(fontSize: 15, fontFamily: "Quando"),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 6,
+                  child: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        choiceButton("a", 0),
+                        choiceButton("b", 1),
+                        choiceButton("c", 2),
+                        choiceButton("d", 3),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
           }
-
-          return ListView(
-            children: snapshot.data.docs.map((document) {
-              return Container(
-                child: Center(child: Text(document['id'])),
-              );
-            }).toList(),
-          );
         },
       ),
     );

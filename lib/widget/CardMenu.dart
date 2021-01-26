@@ -70,7 +70,7 @@ class _CardMenuState extends State<CardMenu> {
                   ),
                   onTap: () {
                     //PERUBAHAN SEMENTARA
-                    Navigator.pushNamed(context, "/GetJson");
+                    Navigator.pushNamed(context, "/GetJsonTrue");
                     // Navigator.pushReplacement(context,
                     //    MaterialPageRoute(builder: (context) => GetJson(true)));
                   },
@@ -138,7 +138,7 @@ class _CardMenuState extends State<CardMenu> {
                     color: Theme.of(context).primaryColor,
                   ),
                   onTap: () {
-                    //Navigator.pushNamed(context, "/MatchMaking");
+                    Navigator.pushNamed(context, "/GetJsonFalse");
                   },
                 ),
               ),
