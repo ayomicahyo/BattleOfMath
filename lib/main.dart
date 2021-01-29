@@ -21,7 +21,40 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    CollectionReference users = FirebaseFirestore.instance.collection('room');
+    return FutureBuilder<DocumentSnapshot>(
+        // Initialize FlutterFire:
+        future: users.doc("zXlEpgyxeBPyQQIh4UFs").get(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          // Check for errors
+          if (snapshot.hasError) {
+            return Scaffold(
+              body: Center(
+                child: Text("Loading.."),
+              ),
+            );
+          }
+
+          // Once complete, show your application
+          if (snapshot.connectionState == ConnectionState.done) {
+            Map<String, dynamic> data = snapshot.data.data();
+            return MaterialApp(
+                //remove mode dubug
+                debugShowCheckedModeBanner: false,
+                routes: {
+                  '/': (context) => SplashScreen(),
+                  '/login': (context) => Login(),
+                  '/dashboard': (context) => Dashboard(),
+                  '/GetJsonTrue': (context) =>
+                      GetJson(true, "Cahyo", "Widiya", "Widiya"),
+                  '/GetJsonFalse': (context) =>
+                      GetJson(false, "Player1", "anjay", "Cahyo"),
+                  '/MatchMaking': (context) => MatchMaking(),
+                });
+
+            // Otherwise, show something whilst waiting for initialization to complete
+            /*return MaterialApp(
       //remove mode dubug
       debugShowCheckedModeBanner: false,
       routes: {
@@ -31,10 +64,17 @@ class _MyAppState extends State<MyApp> {
         '/GetJsonTrue': (context) => GetJson(true, "Player1", "Player2"),
         '/GetJsonFalse': (context) => GetJson(false, "Player1", "anjay"),
         '/MatchMaking': (context) => MatchMaking(),
-      },
+      
       //home: GetJson(), // GANTI AJA PAKE CLASS YANG MAU DI PANGGIL GUYS
       //home: SplashScreen(), // GANTI AJA PAKE CLASS YANG MAU DI PANGGIL GUYS
-      //home: Dashboard(), // GANTI AJA PAKE CLASS YANG MAU DI PANGGIL GUYS
-    );
+      //home: Dashboard(), // GANTI AJA PAKE CLASS YANG MAU DI PANGGIL GUYS */
+
+          }
+          return Scaffold(
+            body: Center(
+              child: Text("Loading.."),
+            ),
+          );
+        });
   }
 }

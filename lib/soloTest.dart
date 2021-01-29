@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:screenshots/screenshots.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -8,11 +9,12 @@ class GetJson extends StatelessWidget {
   bool soloTest = false;
   String player1Name = "Player1";
   String player2name = "Player2";
-
-  GetJson(bool _soloTest, _player1name, _player2name) {
+  String currentName = "";
+  GetJson(bool _soloTest, _player1name, _player2name, _currentName) {
     this.soloTest = _soloTest;
     this.player1Name = _player1name;
     this.player2name = _player2name;
+    this.currentName = _currentName;
   }
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class GetJson extends StatelessWidget {
             );
           } else {
             return (soloTest == true)
-                ? Solotest(myData, player1Name, player2name)
+                ? Solotest(myData, player1Name, player2name, "Widiya")
                 : RankPages(myData, player1Name, player2name);
           }
         });
@@ -40,31 +42,39 @@ class Solotest extends StatefulWidget {
   var myData;
   String player1Name;
   String player2Name;
-  Solotest(List myData, String name1, String name2) {
+  String currentName;
+  Solotest(List myData, String name1, String name2, String currentName) {
     this.myData = myData;
     this.player1Name = name1;
     this.player2Name = name2;
+    this.currentName = currentName;
   }
   @override
   _SolotestState createState() =>
-      _SolotestState(myData, player1Name, player2Name);
+      _SolotestState(myData, player1Name, player2Name, currentName);
 }
 
 class _SolotestState extends State<Solotest> {
   var myData;
   String player1Name;
   String player2Name;
-  _SolotestState(this.myData, this.player1Name, this.player2Name);
+  String currentName;
+  _SolotestState(
+      this.myData, this.player1Name, this.player2Name, this.currentName);
 
   int timer = 60;
   int nomorSoal = 1;
+  int currentSoal = 0;
   String updateTime = "60";
   bool timerOn = true;
   List<String> buttonAnswerStatus = ["normal", "normal", "normal", "normal"];
   List<bool> buttonStatus = [true, true, true, true];
+  int player1Jawab = 0;
+  int player2Jawab = 0;
   int jumlahBenar = 0;
   int jumlahSalah = 0;
   String jawaban;
+  int playerNumber = 1;
 
   @override
   void initState() {
@@ -98,6 +108,36 @@ class _SolotestState extends State<Solotest> {
     );
   }
 
+  showNextKejawabOrangAlertDialog(BuildContext context) {
+    AlertDialog kejawabActionAlert = AlertDialog(
+      title: Text("OOps"),
+      content: Text("Keduluan Lawan Nih"),
+      actions: [
+        FlatButton(
+          onPressed: () {
+            setState(
+              () {
+                nomorSoal = currentSoal;
+                jawaban = myData[2][nomorSoal.toString()];
+                timer = 60; // ini tergantung waktu soal di JSON ya
+                timerOn = true;
+                Navigator.pop(context, false);
+              },
+            );
+          },
+          //Navigator.pop(context, false), // ini nanti diganti jadi Next Soal
+          child: Text("Okey"),
+        ),
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return kejawabActionAlert;
+      },
+    );
+  }
+
   showNextActionAlertDialog(BuildContext context) {
     AlertDialog nextActionAlert = AlertDialog(
       title: Text("selesai"),
@@ -108,6 +148,11 @@ class _SolotestState extends State<Solotest> {
             setState(
               () {
                 nomorSoal += 1;
+                FirebaseFirestore.instance
+                    .collection('room')
+                    .doc('zXlEpgyxeBPyQQIh4UFs')
+                    .update({'qNumber': nomorSoal.toString()});
+
                 jawaban = myData[2][nomorSoal.toString()];
                 timer = 60; // ini tergantung waktu soal di JSON ya
                 timerOn = true;
@@ -141,12 +186,20 @@ class _SolotestState extends State<Solotest> {
           if (timer == 1 && nomorSoal != 10) {
             timerOn = false;
             timer -= 1;
-            showNextActionAlertDialog(context);
+
+            if (currentSoal != nomorSoal) {
+              showNextKejawabOrangAlertDialog(context);
+            } else {
+              showNextActionAlertDialog(context);
+            }
           } else if (timer == 0) {
             timerOn = false;
             //TimeStop Didnt do anything
           } else {
             timer -= 1;
+            if (currentSoal != nomorSoal) {
+              timer = 1;
+            }
           }
 
           updateTime = timer.toString();
@@ -163,9 +216,23 @@ class _SolotestState extends State<Solotest> {
       ),
       child: MaterialButton(
         onPressed: () {
+          timerOn = false;
           setState(() {
             if (optionText == jawaban) {
               jumlahBenar += 1;
+              if (playerNumber == 1) {
+                player1Jawab += 1;
+                FirebaseFirestore.instance
+                    .collection('room')
+                    .doc('zXlEpgyxeBPyQQIh4UFs')
+                    .update({'p1Score': player1Jawab.toString()});
+              } else {
+                player2Jawab += 1;
+                FirebaseFirestore.instance
+                    .collection('room')
+                    .doc('zXlEpgyxeBPyQQIh4UFs')
+                    .update({'p2Score': player2Jawab.toString()});
+              }
             } else {
               jumlahSalah += 1;
             }
@@ -206,22 +273,35 @@ class _SolotestState extends State<Solotest> {
 
   @override
   Widget build(BuildContext context) {
+    CollectionReference roomData =
+        FirebaseFirestore.instance.collection('room');
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
         title: Text(
-          "Soal : " + nomorSoal.toString() + "/10",
+          "Soal : " + currentSoal.toString() + "/10",
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('room').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      body: FutureBuilder<DocumentSnapshot>(
+        future: roomData.doc("zXlEpgyxeBPyQQIh4UFs").get(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          Map<String, dynamic> data = snapshot.data.data();
+          //currentSoal = data['qNumber'];
+
           if (!snapshot.hasData) {
             return Center(
               child: CircularProgressIndicator(),
             );
           } else {
+            currentSoal = int.parse(data['qNumber']);
+            if (player1Name == currentName) {
+              playerNumber = 1;
+            } else {
+              playerNumber = 2;
+            }
             return Column(
               children: <Widget>[
                 Expanded(
@@ -231,8 +311,8 @@ class _SolotestState extends State<Solotest> {
                     alignment: Alignment.center,
                     child: Column(
                       children: <Widget>[
-                        Text(player1Name + " : 0"),
-                        Text(player2Name + " : 0"),
+                        Text(currentName + " : " + data['p1Score']),
+                        Text(currentName + " : " + data['p2Score']),
                       ],
                     ),
                   ),
