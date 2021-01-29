@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:screenshots/screenshots.dart';
 import 'package:flutter/material.dart';
+import 'package:screenshot/screenshot.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'RankPages.dart';
@@ -61,7 +61,8 @@ class _SolotestState extends State<Solotest> {
   String currentName;
   _SolotestState(
       this.myData, this.player1Name, this.player2Name, this.currentName);
-
+  int _counter = 0;
+  //File _imageFile;
   int timer = 60;
   int nomorSoal = 1;
   int currentSoal = 0;
@@ -367,63 +368,3 @@ class _SolotestState extends State<Solotest> {
     );
   }
 }
-
-/*Column(
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: Container(
-                padding: EdgeInsets.only(top: 10),
-                alignment: Alignment.center,
-                child: Column(
-                  children: <Widget>[
-                    Text("Your Score : 0"),
-                    Text("Opponent Score 0"),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                child: Text(
-                  updateTime, // Timer,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      height: 1,
-                      fontSize: 30),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 3,
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                ),
-                padding: EdgeInsets.all(15.0),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  myData[0][nomorSoal.toString()],
-                  style: TextStyle(fontSize: 15, fontFamily: "Quando"),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 6,
-              child: Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    choiceButton("a", 0),
-                    choiceButton("b", 1),
-                    choiceButton("c", 2),
-                    choiceButton("d", 3),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ));*/
