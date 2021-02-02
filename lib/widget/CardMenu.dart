@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class CardMenu extends StatefulWidget {
@@ -138,6 +139,11 @@ class _CardMenuState extends State<CardMenu> {
                     color: Theme.of(context).primaryColor,
                   ),
                   onTap: () {
+                    FirebaseFirestore.instance
+                        .collection('room')
+                        .doc('zXlEpgyxeBPyQQIh4UFs')
+                        .update(
+                            {'p2Score': '0', 'p1Score': '0', 'qNumber': '1'});
                     Navigator.pushNamed(context, "/GetJsonFalse");
                   },
                 ),

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:screenshot/screenshot.dart';
+import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
 import 'RankPages.dart';
@@ -16,6 +16,7 @@ class GetJson extends StatelessWidget {
     this.player2name = _player2name;
     this.currentName = _currentName;
   }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -31,55 +32,66 @@ class GetJson extends StatelessWidget {
             );
           } else {
             return (soloTest == true)
-                ? Solotest(myData, player1Name, player2name, "Widiya")
-                : RankPages(myData, player1Name, player2name);
+                ? Solotest(myData: myData)
+                : RankPages(myData, player1Name, player2name, "Cahyo");
           }
         });
   }
 }
 
+// ignore: must_be_immutable
 class Solotest extends StatefulWidget {
   var myData;
-  String player1Name;
-  String player2Name;
-  String currentName;
-  Solotest(List myData, String name1, String name2, String currentName) {
-    this.myData = myData;
-    this.player1Name = name1;
-    this.player2Name = name2;
-    this.currentName = currentName;
-  }
+
+  Solotest({Key key, @required this.myData}) : super(key: key);
   @override
-  _SolotestState createState() =>
-      _SolotestState(myData, player1Name, player2Name, currentName);
+  _SolotestState createState() => _SolotestState(myData);
 }
 
 class _SolotestState extends State<Solotest> {
   var myData;
-  String player1Name;
-  String player2Name;
-  String currentName;
-  _SolotestState(
-      this.myData, this.player1Name, this.player2Name, this.currentName);
-  int _counter = 0;
-  //File _imageFile;
+  _SolotestState(this.myData);
+
   int timer = 60;
   int nomorSoal = 1;
-  int currentSoal = 0;
   String updateTime = "60";
   bool timerOn = true;
   List<String> buttonAnswerStatus = ["normal", "normal", "normal", "normal"];
   List<bool> buttonStatus = [true, true, true, true];
-  int player1Jawab = 0;
-  int player2Jawab = 0;
+
+  List shuffle(List soal) {
+    var random = new Random();
+
+    // Go through all elements.
+    for (var i = soal.length - 1; i > 0; i--) {
+      // Pick a pseudorandom number according to the list length
+      var n = random.nextInt(i + 1);
+
+      var temp = soal[0][i];
+      soal[0][i] = soal[0][n];
+      soal[0][n] = temp;
+
+      temp = soal[1][i];
+      soal[1][i] = soal[1][n];
+      soal[1][n] = temp;
+
+      temp = soal[2][i];
+      soal[2][i] = soal[2][n];
+      soal[2][n] = temp;
+    }
+
+    return soal;
+  }
+
   int jumlahBenar = 0;
   int jumlahSalah = 0;
   String jawaban;
-  int playerNumber = 1;
+  var suffler;
 
   @override
   void initState() {
-    jawaban = myData[2][nomorSoal.toString()];
+    suffler = shuffle(myData);
+    jawaban = suffler[2][nomorSoal.toString()];
     startTimer();
     super.initState();
   }
@@ -93,9 +105,7 @@ class _SolotestState extends State<Solotest> {
           jumlahSalah.toString()),
       actions: [
         FlatButton(
-          onPressed: () {
-            Navigator.pushNamed(context, "/dashboard");
-          },
+          onPressed: () {},
           child: Text("Calculation"),
         ),
       ],
@@ -105,36 +115,6 @@ class _SolotestState extends State<Solotest> {
       context: context,
       builder: (BuildContext context) {
         return doneActionAlert;
-      },
-    );
-  }
-
-  showNextKejawabOrangAlertDialog(BuildContext context) {
-    AlertDialog kejawabActionAlert = AlertDialog(
-      title: Text("OOps"),
-      content: Text("Keduluan Lawan Nih"),
-      actions: [
-        FlatButton(
-          onPressed: () {
-            setState(
-              () {
-                nomorSoal = currentSoal;
-                jawaban = myData[2][nomorSoal.toString()];
-                timer = 60; // ini tergantung waktu soal di JSON ya
-                timerOn = true;
-                Navigator.pop(context, false);
-              },
-            );
-          },
-          //Navigator.pop(context, false), // ini nanti diganti jadi Next Soal
-          child: Text("Okey"),
-        ),
-      ],
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return kejawabActionAlert;
       },
     );
   }
@@ -149,12 +129,7 @@ class _SolotestState extends State<Solotest> {
             setState(
               () {
                 nomorSoal += 1;
-                FirebaseFirestore.instance
-                    .collection('room')
-                    .doc('zXlEpgyxeBPyQQIh4UFs')
-                    .update({'qNumber': nomorSoal.toString()});
-
-                jawaban = myData[2][nomorSoal.toString()];
+                jawaban = suffler[2][nomorSoal.toString()];
                 timer = 60; // ini tergantung waktu soal di JSON ya
                 timerOn = true;
                 for (int i = 0; i < 4; i++) {
@@ -187,20 +162,12 @@ class _SolotestState extends State<Solotest> {
           if (timer == 1 && nomorSoal != 10) {
             timerOn = false;
             timer -= 1;
-
-            if (currentSoal != nomorSoal) {
-              showNextKejawabOrangAlertDialog(context);
-            } else {
-              showNextActionAlertDialog(context);
-            }
+            showNextActionAlertDialog(context);
           } else if (timer == 0) {
             timerOn = false;
             //TimeStop Didnt do anything
           } else {
             timer -= 1;
-            if (currentSoal != nomorSoal) {
-              timer = 1;
-            }
           }
 
           updateTime = timer.toString();
@@ -217,23 +184,9 @@ class _SolotestState extends State<Solotest> {
       ),
       child: MaterialButton(
         onPressed: () {
-          timerOn = false;
           setState(() {
             if (optionText == jawaban) {
               jumlahBenar += 1;
-              if (playerNumber == 1) {
-                player1Jawab += 1;
-                FirebaseFirestore.instance
-                    .collection('room')
-                    .doc('zXlEpgyxeBPyQQIh4UFs')
-                    .update({'p1Score': player1Jawab.toString()});
-              } else {
-                player2Jawab += 1;
-                FirebaseFirestore.instance
-                    .collection('room')
-                    .doc('zXlEpgyxeBPyQQIh4UFs')
-                    .update({'p2Score': player2Jawab.toString()});
-              }
             } else {
               jumlahSalah += 1;
             }
@@ -259,7 +212,7 @@ class _SolotestState extends State<Solotest> {
           }
         },
         child: Text(
-          myData[1][nomorSoal.toString()][optionText],
+          suffler[1][nomorSoal.toString()][optionText],
           style: TextStyle(fontFamily: "Quando", fontSize: 16),
         ),
         splashColor: Colors.lightBlueAccent,
@@ -274,97 +227,72 @@ class _SolotestState extends State<Solotest> {
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference roomData =
-        FirebaseFirestore.instance.collection('room');
-
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.lightBlue,
-        title: Text(
-          "Soal : " + currentSoal.toString() + "/10",
-          style: TextStyle(color: Colors.black),
+        appBar: AppBar(
+          backgroundColor: Colors.lightBlue,
+          title: Text(
+            "Soal : " + nomorSoal.toString() + "/10",
+            style: TextStyle(color: Colors.black),
+          ),
         ),
-      ),
-      body: FutureBuilder<DocumentSnapshot>(
-        future: roomData.doc("zXlEpgyxeBPyQQIh4UFs").get(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          Map<String, dynamic> data = snapshot.data.data();
-          //currentSoal = data['qNumber'];
-
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            currentSoal = int.parse(data['qNumber']);
-            if (player1Name == currentName) {
-              playerNumber = 1;
-            } else {
-              playerNumber = 2;
-            }
-            return Column(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(top: 10),
-                    alignment: Alignment.center,
-                    child: Column(
-                      children: <Widget>[
-                        Text(player1Name + " : " + data['p1Score']),
-                        Text(player2Name + " : " + data['p2Score']),
-                      ],
-                    ),
-                  ),
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              flex: 1,
+              child: Container(
+                padding: EdgeInsets.only(top: 10),
+                alignment: Alignment.center,
+                child: Column(
+                  children: <Widget>[
+                    Text("Your Score : 0"),
+                    Text("Opponent Score 0"),
+                  ],
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    child: Text(
-                      updateTime, // Timer,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          height: 1,
-                          fontSize: 30),
-                    ),
-                  ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Container(
+                child: Text(
+                  updateTime, // Timer,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      height: 1,
+                      fontSize: 30),
                 ),
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                    ),
-                    padding: EdgeInsets.all(15.0),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      myData[0][nomorSoal.toString()],
-                      style: TextStyle(fontSize: 15, fontFamily: "Quando"),
-                    ),
-                  ),
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
                 ),
-                Expanded(
-                  flex: 6,
-                  child: Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        choiceButton("a", 0),
-                        choiceButton("b", 1),
-                        choiceButton("c", 2),
-                        choiceButton("d", 3),
-                      ],
-                    ),
-                  ),
+                padding: EdgeInsets.all(15.0),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  suffler[0][nomorSoal.toString()],
+                  style: TextStyle(fontSize: 15, fontFamily: "Quando"),
                 ),
-              ],
-            );
-          }
-        },
-      ),
-    );
+              ),
+            ),
+            Expanded(
+              flex: 6,
+              child: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    choiceButton("a", 0),
+                    choiceButton("b", 1),
+                    choiceButton("c", 2),
+                    choiceButton("d", 3),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ));
   }
 }

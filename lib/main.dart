@@ -52,23 +52,6 @@ class _MyAppState extends State<MyApp> {
                       GetJson(false, "Player1", "anjay", "Cahyo"),
                   '/MatchMaking': (context) => MatchMaking(),
                 });
-
-            // Otherwise, show something whilst waiting for initialization to complete
-            /*return MaterialApp(
-      //remove mode dubug
-      debugShowCheckedModeBanner: false,
-      routes: {
-        '/': (context) => SplashScreen(),
-        '/login': (context) => Login(),
-        '/dashboard': (context) => Dashboard(),
-        '/GetJsonTrue': (context) => GetJson(true, "Player1", "Player2"),
-        '/GetJsonFalse': (context) => GetJson(false, "Player1", "anjay"),
-        '/MatchMaking': (context) => MatchMaking(),
-      
-      //home: GetJson(), // GANTI AJA PAKE CLASS YANG MAU DI PANGGIL GUYS
-      //home: SplashScreen(), // GANTI AJA PAKE CLASS YANG MAU DI PANGGIL GUYS
-      //home: Dashboard(), // GANTI AJA PAKE CLASS YANG MAU DI PANGGIL GUYS */
-
           }
           return Scaffold(
             body: Center(
