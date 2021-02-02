@@ -312,8 +312,8 @@ class _SolotestState extends State<Solotest> {
                     alignment: Alignment.center,
                     child: Column(
                       children: <Widget>[
-                        Text(currentName + " : " + data['p1Score']),
-                        Text(currentName + " : " + data['p2Score']),
+                        Text(player1Name + " : " + data['p1Score']),
+                        Text(player2Name + " : " + data['p2Score']),
                       ],
                     ),
                   ),
