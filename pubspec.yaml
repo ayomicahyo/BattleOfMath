@@ -33,6 +33,8 @@ dependencies:
   bottom_navy_bar: ^5.6.0
   line_icons: ^0.2.0
   screenshot: ^0.2.0
+  image_picker: ^0.6.7+22
+  social_share: ^2.0.5
   
   
 dev_dependencies:

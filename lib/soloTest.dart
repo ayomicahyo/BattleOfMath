@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:social_share/social_share.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
 import 'RankPages.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:screenshot/screenshot.dart';
 
 class GetJson extends StatelessWidget {
   bool soloTest = false;
@@ -52,6 +55,7 @@ class _SolotestState extends State<Solotest> {
   var myData;
   _SolotestState(this.myData);
 
+  PickedFile image;
   int timer = 60;
   int nomorSoal = 1;
   String updateTime = "60";
@@ -62,9 +66,7 @@ class _SolotestState extends State<Solotest> {
   List shuffle(List soal) {
     var random = new Random();
 
-    // Go through all elements.
     for (var i = soal.length - 1; i > 0; i--) {
-      // Pick a pseudorandom number according to the list length
       var n = random.nextInt(i + 1);
 
       var temp = soal[0][i];
@@ -90,7 +92,7 @@ class _SolotestState extends State<Solotest> {
 
   @override
   void initState() {
-    suffler = shuffle(myData);
+    suffler = myData;
     jawaban = suffler[2][nomorSoal.toString()];
     startTimer();
     super.initState();
@@ -105,8 +107,17 @@ class _SolotestState extends State<Solotest> {
           jumlahSalah.toString()),
       actions: [
         FlatButton(
-          onPressed: () {},
-          child: Text("Calculation"),
+          onPressed: () async {
+            await screenshotController.capture().then((image) async {
+              SocialShare.shareInstagramStorywithBackground(
+                      image.path, "#ffffff", "#000000", "https://deep-link-url",
+                      backgroundImagePath: image.path)
+                  .then((data) {
+                print(data);
+              });
+            });
+          },
+          child: Text("Share IG"),
         ),
       ],
     );
@@ -225,6 +236,8 @@ class _SolotestState extends State<Solotest> {
     );
   }
 
+  ScreenshotController screenshotController = ScreenshotController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -235,64 +248,71 @@ class _SolotestState extends State<Solotest> {
             style: TextStyle(color: Colors.black),
           ),
         ),
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: Container(
-                padding: EdgeInsets.only(top: 10),
+        body: Screenshot(
+            controller: screenshotController,
+            child: Container(
+                color: Colors.white,
                 alignment: Alignment.center,
                 child: Column(
-                  children: <Widget>[
-                    Text("Your Score : 0"),
-                    Text("Opponent Score 0"),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                child: Text(
-                  updateTime, // Timer,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      height: 1,
-                      fontSize: 30),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 3,
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                ),
-                padding: EdgeInsets.all(15.0),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  suffler[0][nomorSoal.toString()],
-                  style: TextStyle(fontSize: 15, fontFamily: "Quando"),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 6,
-              child: Container(
-                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    choiceButton("a", 0),
-                    choiceButton("b", 1),
-                    choiceButton("c", 2),
-                    choiceButton("d", 3),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        padding: EdgeInsets.only(top: 10),
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: <Widget>[
+                            Text("Your Score : 0"),
+                            Text("Opponent Score 0"),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        child: Text(
+                          updateTime, // Timer,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              height: 1,
+                              fontSize: 30),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                        ),
+                        padding: EdgeInsets.all(15.0),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          suffler[0][nomorSoal.toString()],
+                          style: TextStyle(fontSize: 15, fontFamily: "Quando"),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 6,
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            choiceButton("a", 0),
+                            choiceButton("b", 1),
+                            choiceButton("c", 2),
+                            choiceButton("d", 3),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
-                ),
-              ),
-            ),
-          ],
-        ));
+                ))));
   }
 }

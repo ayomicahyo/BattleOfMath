@@ -6,6 +6,8 @@ class MatchMaking extends StatefulWidget {
 }
 
 class _MatchMaking extends State<MatchMaking> {
+  final controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +30,7 @@ class _MatchMaking extends State<MatchMaking> {
           Container(
               margin: EdgeInsets.only(top: 10, bottom: 10, left: 40, right: 40),
               child: TextFormField(
-                //initialValue: 'email',
+                controller: controller,
                 decoration: InputDecoration(
                     labelText: 'Room Id',
                     prefixIcon: Icon(Icons.lock_open),
@@ -37,7 +39,11 @@ class _MatchMaking extends State<MatchMaking> {
           RaisedButton(
               color: Colors.lightBlue,
               onPressed: () {
-                Navigator.pushNamed(context, "/GetJson");
+                if (controller.text == "JK811") {
+                  Navigator.pushNamed(context, "/GetJsonFalse");
+                } else {
+                  salahRoomAlertDialog(context);
+                }
               },
               child: Text(
                 'JOIN',
@@ -48,6 +54,32 @@ class _MatchMaking extends State<MatchMaking> {
               )),
         ],
       ),
+    );
+  }
+
+  salahRoomAlertDialog(BuildContext context) {
+    AlertDialog falseAlert = AlertDialog(
+      title: Text("Check Room"),
+      content: Text("Kode Salah"),
+      actions: [
+        FlatButton(
+          onPressed: () {
+            setState(
+              () {
+                Navigator.pop(context, false);
+              },
+            );
+          },
+          //Navigator.pop(context, false), // ini nanti diganti jadi Next Soal
+          child: Text("Okey"),
+        ),
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return falseAlert;
+      },
     );
   }
 }
