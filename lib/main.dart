@@ -19,12 +19,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  String userId = "oxDLuUYoFgvjlSR34wKA";
+
   @override
   Widget build(BuildContext context) {
-    CollectionReference users = FirebaseFirestore.instance.collection('room');
+    CollectionReference users =
+        FirebaseFirestore.instance.collection('account');
     return FutureBuilder<DocumentSnapshot>(
         // Initialize FlutterFire:
-        future: users.doc("zXlEpgyxeBPyQQIh4UFs").get(),
+        future: users.doc(userId).get(),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           // Check for errors
@@ -45,11 +48,10 @@ class _MyAppState extends State<MyApp> {
                 routes: {
                   '/': (context) => SplashScreen(),
                   '/login': (context) => Login(),
-                  '/dashboard': (context) => Dashboard(),
-                  '/GetJsonTrue': (context) =>
-                      GetJson(true, "Cahyo", "Widiya", "Widiya"),
+                  '/GetJsonTrue': (context) => GetJson(
+                      true, "Cahyo", "Widiya", data['username']), //anti kuganti
                   '/GetJsonFalse': (context) =>
-                      GetJson(false, "Player1", "anjay", "Cahyo"),
+                      GetJson(false, "Player1", "anjay", data['username']),
                   '/MatchMaking': (context) => MatchMaking(),
                 });
           }
