@@ -1,3 +1,4 @@
+import 'package:battleofmath/model/account.dart';
 import 'package:battleofmath/widget/CardMenu.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
@@ -5,9 +6,9 @@ import 'package:line_icons/line_icons.dart';
 
 // ignore: must_be_immutable
 class Dashboard extends StatefulWidget {
-  String userId;
+  Account userId;
 
-  Dashboard(String _userId) {
+  Dashboard(Account _userId) {
     this.userId = _userId;
   }
 
@@ -18,7 +19,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   //for navigator
   //Pake ini userId nya
-  String userId;
+  Account userId;
   int _currentIndex = 0;
   PageController _pageController;
 
@@ -45,7 +46,7 @@ class _DashboardState extends State<Dashboard> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(userId + "Tes Aja"),
+                      Text(userId.email),
                       Image.asset(
                         "assets/images/ColorLogo.png",
                         width: 50.9,

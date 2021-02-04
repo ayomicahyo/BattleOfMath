@@ -1,47 +1,45 @@
 class Account {
-  final String email;
-  final String id;
-  final String username;
-  final String password;
-  final String name;
-  final String image;
-  final int startcont;
-  final String power;
-  final String status;
+  String email;
+  String id;
+  String username;
+  String password;
+  String name;
+  String image;
+  int startcont;
+  String power;
+  String status;
 
-  Account({
-    this.email,
-    this.id,
-    this.image,
-    this.name,
-    this.password,
-    this.power,
-    this.startcont,
-    this.status,
-    this.username,
-  });
-
-  factory Account.fromJson(Map<String, dynamic> json) {
-    return Account(
-      id: json['id'],
-      username: json['username'],
-      password: json['password'],
-      name: json['name'],
-      image: json['image'],
-      startcont: json['startcount'],
-      power: json['power'],
-      status: json['status'],
-    );
+  Account(
+    String email,
+    String id,
+    String image,
+    String name,
+    String password,
+    String power,
+    int startcont,
+    String status,
+    String username,
+  ) {
+    this.email = email;
+    this.id = id;
+    this.username = username;
+    this.password = password;
+    this.name = name;
+    this.image = image;
+    this.startcont = startcont;
+    this.status = status;
+    this.username = username;
   }
 
   Map<String, dynamic> toJson() => {
+        'email': email,
         'id': id,
-        'username': username,
-        'password': password,
-        'name': name,
         'image': image,
-        'startcont': startcont,
+        'name': name,
+        'password': password,
         'power': power,
+        'startcont': startcont,
         'status': status,
+        'username': username,
       };
 }
