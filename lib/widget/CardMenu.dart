@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class CardMenu extends StatefulWidget {
@@ -70,7 +71,7 @@ class _CardMenuState extends State<CardMenu> {
                   ),
                   onTap: () {
                     //PERUBAHAN SEMENTARA
-                    Navigator.pushNamed(context, "/GetJson");
+                    Navigator.pushNamed(context, "/GetJsonTrue");
                     // Navigator.pushReplacement(context,
                     //    MaterialPageRoute(builder: (context) => GetJson(true)));
                   },
@@ -138,7 +139,12 @@ class _CardMenuState extends State<CardMenu> {
                     color: Theme.of(context).primaryColor,
                   ),
                   onTap: () {
-                    //Navigator.pushNamed(context, "/MatchMaking");
+                    FirebaseFirestore.instance
+                        .collection('room')
+                        .doc('zXlEpgyxeBPyQQIh4UFs')
+                        .update(
+                            {'p2Score': '0', 'p1Score': '0', 'qNumber': '1'});
+                    Navigator.pushNamed(context, "/GetJsonFalse");
                   },
                 ),
               ),

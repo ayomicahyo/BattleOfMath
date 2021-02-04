@@ -19,21 +19,47 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  String userId = "oxDLuUYoFgvjlSR34wKA";
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      //remove mode dubug
-      debugShowCheckedModeBanner: false,
-      routes: {
-        '/': (context) => SplashScreen(),
-        '/login': (context) => Login(),
-        '/dashboard': (context) => Dashboard(),
-        '/GetJson': (context) => GetJson(true),
-        '/MatchMaking': (context) => MatchMaking(),
-      },
-      //home: GetJson(), // GANTI AJA PAKE CLASS YANG MAU DI PANGGIL GUYS
-      //home: SplashScreen(), // GANTI AJA PAKE CLASS YANG MAU DI PANGGIL GUYS
-      //home: Dashboard(), // GANTI AJA PAKE CLASS YANG MAU DI PANGGIL GUYS
-    );
+    CollectionReference users =
+        FirebaseFirestore.instance.collection('account');
+    return FutureBuilder<DocumentSnapshot>(
+        // Initialize FlutterFire:
+        future: users.doc(userId).get(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          // Check for errors
+          if (snapshot.hasError) {
+            return Scaffold(
+              body: Center(
+                child: Text("Loading.."),
+              ),
+            );
+          }
+
+          // Once complete, show your application
+          if (snapshot.connectionState == ConnectionState.done) {
+            Map<String, dynamic> data = snapshot.data.data();
+            return MaterialApp(
+                //remove mode dubug
+                debugShowCheckedModeBanner: false,
+                routes: {
+                  '/': (context) => SplashScreen(),
+                  '/login': (context) => Login(),
+                  '/GetJsonTrue': (context) => GetJson(
+                      true, "Cahyo", "Widiya", data['username']), //anti kuganti
+                  '/GetJsonFalse': (context) =>
+                      GetJson(false, "Player1", "anjay", data['username']),
+                  '/MatchMaking': (context) => MatchMaking(),
+                });
+          }
+          return Scaffold(
+            body: Center(
+              child: Text("Loading.."),
+            ),
+          );
+        });
   }
 }

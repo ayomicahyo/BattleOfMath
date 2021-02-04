@@ -32,6 +32,7 @@ dependencies:
   google_nav_bar: ^3.1.0
   bottom_navy_bar: ^5.6.0
   line_icons: ^0.2.0
+  screenshot: ^0.2.0
   
   
 dev_dependencies:
