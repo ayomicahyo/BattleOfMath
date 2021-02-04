@@ -5,20 +5,20 @@ class Account {
   final String password;
   final String name;
   final String image;
-  final int startcount;
+  final int startcont;
   final String power;
   final String status;
 
   Account({
     this.email,
     this.id,
-    this.username,
-    this.password,
-    this.name,
     this.image,
-    this.startcount,
+    this.name,
+    this.password,
     this.power,
+    this.startcont,
     this.status,
+    this.username,
   });
 
   factory Account.fromJson(Map<String, dynamic> json) {
@@ -28,7 +28,7 @@ class Account {
       password: json['password'],
       name: json['name'],
       image: json['image'],
-      startcount: json['startcount'],
+      startcont: json['startcount'],
       power: json['power'],
       status: json['status'],
     );
@@ -40,7 +40,7 @@ class Account {
         'password': password,
         'name': name,
         'image': image,
-        'startcont': startcount,
+        'startcont': startcont,
         'power': power,
         'status': status,
       };

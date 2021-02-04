@@ -31,7 +31,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     CollectionReference users =
         FirebaseFirestore.instance.collection('account');
-    List<Account> acountList = new List<Account>();
+    Account acountList = Account();
 
     return Scaffold(
       body: StreamBuilder(
@@ -45,20 +45,20 @@ class _LoginState extends State<Login> {
 
           return ListView(
             children: snapshot.data.docs.map((doc) {
-              acountList.add(new Account(
+              acountList = new Account(
                   email: doc['email'],
                   id: doc['id'],
-                  username: doc['username'],
-                  password: doc['password'],
-                  name: doc['name'],
                   image: doc['image'],
-                  startcount: doc['startcount'],
+                  name: doc['name'],
+                  password: doc['password'],
                   power: doc['power'],
-                  status: doc['status']));
+                  startcont: doc['startcont'],
+                  status: doc['status'],
+                  username: doc['username']);
 
               return Center(
                 child: Container(
-                  child: Text(acountList[1].email),
+                  child: Text(acountList.email),
                 ),
               );
             }).toList(),
