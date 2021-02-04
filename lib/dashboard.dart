@@ -3,15 +3,26 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 
+// ignore: must_be_immutable
 class Dashboard extends StatefulWidget {
+  String userId;
+
+  Dashboard(String _userId) {
+    this.userId = _userId;
+  }
+
   @override
-  _DashboardState createState() => _DashboardState();
+  _DashboardState createState() => _DashboardState(userId);
 }
 
 class _DashboardState extends State<Dashboard> {
-  //for navigator bar
+  //for navigator
+  //Pake ini userId nya
+  String userId;
   int _currentIndex = 0;
   PageController _pageController;
+
+  _DashboardState(this.userId);
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +45,7 @@ class _DashboardState extends State<Dashboard> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
+                      Text(userId + "Tes Aja"),
                       Image.asset(
                         "assets/images/ColorLogo.png",
                         width: 50.9,

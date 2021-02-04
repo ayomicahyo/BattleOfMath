@@ -1,4 +1,5 @@
 class Account {
+  final String email;
   final String id;
   final String username;
   final String password;
@@ -9,6 +10,7 @@ class Account {
   final String status;
 
   Account({
+    this.email,
     this.id,
     this.username,
     this.password,
