@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:social_share/social_share.dart';
 
 // ignore: must_be_immutable
 class RankPages extends StatefulWidget {
@@ -25,6 +27,7 @@ class _RankPagesState extends State<RankPages> {
   String player1Name;
   String player2Name;
   String currentName;
+  ScreenshotController screenshotController = ScreenshotController();
 
   _RankPagesState(
       this.myData, this.player1Name, this.player2Name, this.currentName);
@@ -60,7 +63,15 @@ class _RankPagesState extends State<RankPages> {
           jumlahSalah.toString()),
       actions: [
         FlatButton(
-          onPressed: () {
+          onPressed: () async {
+            await screenshotController.capture().then((image) async {
+              SocialShare.shareInstagramStorywithBackground(
+                      image.path, "#ffffff", "#000000", "https://google.com",
+                      backgroundImagePath: image.path)
+                  .then((data) {
+                print(data);
+              });
+            });
             Navigator.pushNamed(context, "/dashboard");
           },
           child: Text("Calculation"),
@@ -245,93 +256,95 @@ class _RankPagesState extends State<RankPages> {
         FirebaseFirestore.instance.collection('room');
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.lightBlue,
-        title: Text(
-          "Soal : " + currentSoal.toString() + "/10",
-          style: TextStyle(color: Colors.black),
+        appBar: AppBar(
+          backgroundColor: Colors.lightBlue,
+          title: Text(
+            "Soal : " + currentSoal.toString() + "/10",
+            style: TextStyle(color: Colors.black),
+          ),
         ),
-      ),
-      body: FutureBuilder<DocumentSnapshot>(
-        future: roomData.doc("zXlEpgyxeBPyQQIh4UFs").get(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          Map<String, dynamic> data = snapshot.data.data();
-          //currentSoal = data['qNumber'];
+        body: Screenshot(
+          controller: screenshotController,
+          child: FutureBuilder<DocumentSnapshot>(
+            future: roomData.doc("zXlEpgyxeBPyQQIh4UFs").get(),
+            builder: (BuildContext context,
+                AsyncSnapshot<DocumentSnapshot> snapshot) {
+              Map<String, dynamic> data = snapshot.data.data();
+              //currentSoal = data['qNumber'];
 
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            currentSoal = int.parse(data['qNumber']);
-            if (player1Name == currentName) {
-              playerNumber = 1;
-            } else {
-              playerNumber = 2;
-            }
-            return Column(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.only(top: 10),
-                    alignment: Alignment.center,
-                    child: Column(
-                      children: <Widget>[
-                        Text(player1Name + " : " + data['p1Score']),
-                        Text(player2Name + " : " + data['p2Score']),
-                      ],
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                currentSoal = int.parse(data['qNumber']);
+                if (player1Name == currentName) {
+                  playerNumber = 1;
+                } else {
+                  playerNumber = 2;
+                }
+                return Column(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        padding: EdgeInsets.only(top: 10),
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: <Widget>[
+                            Text(player1Name + " : " + data['p1Score']),
+                            Text(player2Name + " : " + data['p2Score']),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    child: Text(
-                      updateTime, // Timer,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          height: 1,
-                          fontSize: 30),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        child: Text(
+                          updateTime, // Timer,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              height: 1,
+                              fontSize: 30),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
+                    Expanded(
+                      flex: 3,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                        ),
+                        padding: EdgeInsets.all(15.0),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          myData[0][nomorSoal.toString()],
+                          style: TextStyle(fontSize: 15, fontFamily: "Quando"),
+                        ),
+                      ),
                     ),
-                    padding: EdgeInsets.all(15.0),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      myData[0][nomorSoal.toString()],
-                      style: TextStyle(fontSize: 15, fontFamily: "Quando"),
+                    Expanded(
+                      flex: 6,
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            choiceButton("a", 0),
+                            choiceButton("b", 1),
+                            choiceButton("c", 2),
+                            choiceButton("d", 3),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  flex: 6,
-                  child: Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        choiceButton("a", 0),
-                        choiceButton("b", 1),
-                        choiceButton("c", 2),
-                        choiceButton("d", 3),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            );
-          }
-        },
-      ),
-    );
+                  ],
+                );
+              }
+            },
+          ),
+        ));
   }
 }

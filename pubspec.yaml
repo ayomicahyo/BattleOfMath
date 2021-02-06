@@ -34,10 +34,12 @@ dependencies:
   line_icons: ^0.2.0
   screenshot: ^0.2.0
   flutter_launcher_icons: ^0.8.1
+  social_share: ^2.0.5
+  
 
 flutter_icons:
-  image_path: assets/images/ColorLogo.png"
-  android: true
+  image_path: "assets/images/ColorLogo.png"
+  android: "assets/images/ColorLogo.png"
   ios: true
   
 dev_dependencies:
