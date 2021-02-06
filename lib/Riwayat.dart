@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class LeaderBoard extends StatefulWidget {
+class Riwayat extends StatefulWidget {
   @override
-  _LeaderBoardState createState() => _LeaderBoardState();
+  _Riwayat createState() => _Riwayat();
 }
 
-class _LeaderBoardState extends State<LeaderBoard> {
+class _Riwayat extends State<Riwayat> {
   Image applogo = new Image(
       image: new ExactAssetImage("assets/images/whiteLogo.png"),
       height: 50.9,
@@ -44,7 +44,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
         Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(5)),
-              color: Colors.lightGreen,
+              color: Colors.lightBlue,
             ),
             padding: EdgeInsets.only(
               left: 30,
@@ -53,14 +53,18 @@ class _LeaderBoardState extends State<LeaderBoard> {
             height: 60,
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[Text('1 |'), Text('Entry A'), Text('100')])),
+                children: <Widget>[
+                  Text("RankMatch"),
+                  Text('WIN'),
+                  Text('60')
+                ])),
         SizedBox(
           height: 30,
         ),
         Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(5)),
-              color: Colors.lightGreen,
+              color: Colors.lightBlue,
             ),
             padding: EdgeInsets.only(
               left: 30,
@@ -69,14 +73,18 @@ class _LeaderBoardState extends State<LeaderBoard> {
             height: 60,
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[Text('2 |'), Text('Entry B'), Text('100')])),
+                children: <Widget>[
+                  Text("RankMatch"),
+                  Text('WIN'),
+                  Text('40')
+                ])),
         SizedBox(
           height: 30,
         ),
         Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(5)),
-              color: Colors.lightGreen,
+              color: Colors.lightBlue,
             ),
             padding: EdgeInsets.only(
               left: 30,
@@ -85,7 +93,11 @@ class _LeaderBoardState extends State<LeaderBoard> {
             height: 60,
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[Text('3 |'), Text('Entry C'), Text('100')])),
+                children: <Widget>[
+                  Text("Custom Match"),
+                  Text('Lose'),
+                  Text('60')
+                ])),
       ],
     ));
   }

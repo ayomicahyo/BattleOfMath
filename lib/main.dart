@@ -1,5 +1,5 @@
 import 'package:battleofmath/Splash.dart';
-import 'package:battleofmath/dashboard.dart';
+import 'register.dart';
 import 'package:battleofmath/login.dart';
 import 'package:battleofmath/soloTest.dart';
 import 'package:battleofmath/MatchMaking.dart';
@@ -48,6 +48,7 @@ class _MyAppState extends State<MyApp> {
                 routes: {
                   '/': (context) => SplashScreen(),
                   '/login': (context) => Login(),
+                  '/register': (context) => Register(),
                   '/GetJsonTrue': (context) => GetJson(
                       true, "Cahyo", "Widiya", data['username']), //anti kuganti
                   '/GetJsonFalse': (context) =>

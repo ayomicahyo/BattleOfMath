@@ -1,10 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
 import 'RankPages.dart';
 
+// ignore: must_be_immutable
 class GetJson extends StatelessWidget {
   bool soloTest = false;
   String player1Name = "Player1";
@@ -90,7 +90,7 @@ class _SolotestState extends State<Solotest> {
 
   @override
   void initState() {
-    suffler = shuffle(myData);
+    suffler = myData;
     jawaban = suffler[2][nomorSoal.toString()];
     startTimer();
     super.initState();

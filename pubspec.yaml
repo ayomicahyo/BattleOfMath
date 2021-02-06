@@ -33,7 +33,12 @@ dependencies:
   bottom_navy_bar: ^5.6.0
   line_icons: ^0.2.0
   screenshot: ^0.2.0
-  
+  flutter_launcher_icons: ^0.8.1
+
+flutter_icons:
+  image_path: assets/images/ColorLogo.png"
+  android: true
+  ios: true
   
 dev_dependencies:
   flutter_test:

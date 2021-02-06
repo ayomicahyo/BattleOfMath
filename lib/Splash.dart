@@ -19,12 +19,6 @@ class _SplashScreenState extends State<SplashScreen> {
     return Timer(duration, () {
       //PERUBAHAN SEMENTARA
       Navigator.pushNamed(context, '/login');
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => LeaderBoard(), //GANTI GANTI DISINI YA
-      //   ),
-      //);
     });
   }
 

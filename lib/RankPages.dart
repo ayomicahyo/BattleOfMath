@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'soloTest.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // ignore: must_be_immutable
@@ -29,7 +28,7 @@ class _RankPagesState extends State<RankPages> {
 
   _RankPagesState(
       this.myData, this.player1Name, this.player2Name, this.currentName);
-  int _counter = 0;
+
   //File _imageFile;
   int timer = 60;
   int nomorSoal = 1;

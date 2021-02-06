@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class MatchMaking extends StatefulWidget {
@@ -6,6 +7,8 @@ class MatchMaking extends StatefulWidget {
 }
 
 class _MatchMaking extends State<MatchMaking> {
+  final textController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +31,7 @@ class _MatchMaking extends State<MatchMaking> {
           Container(
               margin: EdgeInsets.only(top: 10, bottom: 10, left: 40, right: 40),
               child: TextFormField(
-                //initialValue: 'email',
+                controller: textController,
                 decoration: InputDecoration(
                     labelText: 'Room Id',
                     prefixIcon: Icon(Icons.lock_open),
@@ -37,7 +40,13 @@ class _MatchMaking extends State<MatchMaking> {
           RaisedButton(
               color: Colors.lightBlue,
               onPressed: () {
-                Navigator.pushNamed(context, "/GetJson");
+                if (textController.text == "ID1") {
+                  FirebaseFirestore.instance
+                      .collection('room')
+                      .doc('zXlEpgyxeBPyQQIh4UFs')
+                      .update({'p2Score': '0', 'p1Score': '0', 'qNumber': '1'});
+                  Navigator.pushNamed(context, "/GetJsonFalse");
+                }
               },
               child: Text(
                 'JOIN',
