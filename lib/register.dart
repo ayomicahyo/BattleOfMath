@@ -41,6 +41,7 @@ class _RegisterState extends State<Register> {
               setState(
                 () {
                   Navigator.pop(context, false);
+                  Navigator.pop(context);
                 },
               );
             },
@@ -135,7 +136,6 @@ class _RegisterState extends State<Register> {
               nameController.text);
           FirebaseFirestore.instance.collection('account').add(userId.toJson());
           alertsukses(context);
-          Navigator.pop(context);
 
           // } //end if
         },

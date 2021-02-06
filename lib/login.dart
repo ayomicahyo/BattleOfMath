@@ -212,16 +212,6 @@ class _LoginState extends State<Login> {
                                       },
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 50, bottom: 0),
-                                    child: Text(
-                                      snapshot.data.docs[1]['email'] +
-                                          " " +
-                                          snapshot.data.docs[1]['password'],
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
                                 ],
                               ),
                             ),
